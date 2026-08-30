@@ -10,7 +10,7 @@ const Profile = ({ watchlistCount = 0, movieCount = 0, tvCount = 0 }) => {
     const fetchUserProfile = async () => {
       if (token && (!user?.email || user?.email === 'N/A')) {
         try {
-          const res = await axios.get('http://127.0.0.1:8000/api/profile/', {
+          const res = await axios.get('https://cinophile-backend.vercel.app/api/profile/', {
             headers: { Authorization: `Bearer ${token}` },
           });
           if (res.data) {

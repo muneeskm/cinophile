@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../AuthContext';
 
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_KEY || 'YOUR_TMDB_API_KEY';
-const BACKEND_URL = 'http://127.0.0.1:8000/api/watchlist/';
+const BACKEND_URL = 'https://cinophile-backend.vercel.app/api/watchlist/';
 
 const ExploreTMDB = ({ watchlist = [], onWatchlistUpdated }) => {
   const { token } = useContext(AuthContext);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: 'https://cinophile-backend.vercel.app/api/',
 });
 
 // Interceptor 1: Attach JWT Access Token to request headers
@@ -28,7 +28,7 @@ api.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const res = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
+          const res = await axios.post('https://cinophile-backend.vercel.app/api/token/refresh/', {
             refresh: refreshToken,
           });
           

@@ -4,7 +4,7 @@ import { AuthContext } from '../AuthContext';
 import ExploreTMDB from './ExploreTMDB';
 import Profile from './Profile';
 
-const BACKEND_URL = 'http://127.0.0.1:8000/api/watchlist/';
+const BACKEND_URL = 'https://cinophile-backend.vercel.app/api/watchlist/';
 
 const Watchlist = () => {
   const { token, logout, user } = useContext(AuthContext);
