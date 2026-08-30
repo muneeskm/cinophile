@@ -1,14 +1,20 @@
 import axios from 'axios';
 
+// Pulls from Vercel Config or REACT_APP variable, falling back to local server during dev
+const BACKEND_BASE = 
+  process.env.REACT_APP_BACKEND_URL || 
+  process.env.BACKEND_URL || 
+  'http://127.0.0.1:8000';
+
 const api = axios.create({
-  baseURL: 'https://cinophile-backend.vercel.app/api/',
+  baseURL: `${BACKEND_BASE}/api/`,
 });
 
-// Interceptor 1: Attach JWT Access Token to request headers
+// Interceptor 1: Attach JWT Access Token (uses key 'token' matching AuthContext)
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access');
-    if (token) {
+    const token = localStorage.getItem('token');
+    if (token && token !== 'undefined') {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -16,7 +22,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor 2: Handle 401 errors by refreshing token
+// Interceptor 2: Handle 401 errors & token refresh
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -26,18 +32,19 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refresh');
 
-      if (refreshToken) {
+      if (refreshToken && refreshToken !== 'undefined') {
         try {
-          const res = await axios.post('https://cinophile-backend.vercel.app/api/token/refresh/', {
+          const res = await axios.post(`${BACKEND_BASE}/api/token/refresh/`, {
             refresh: refreshToken,
           });
-          
-          localStorage.setItem('access', res.data.access);
+
+          localStorage.setItem('token', res.data.access);
           originalRequest.headers.Authorization = `Bearer ${res.data.access}`;
           return api(originalRequest);
         } catch (refreshError) {
-          localStorage.removeItem('access');
+          localStorage.removeItem('token');
           localStorage.removeItem('refresh');
+          localStorage.removeItem('user');
           window.location.href = '/login';
         }
       }
