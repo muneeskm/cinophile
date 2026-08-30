@@ -1,0 +1,1 @@
+web: gunicorn Cinophile.wsgi:applicationg

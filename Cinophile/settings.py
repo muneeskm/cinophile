@@ -126,6 +126,7 @@ STATIC_URL = 'static/'
 
 # React Development Server URL
 CORS_ALLOWED_ORIGINS = [
+    "https://cinophilemov.vercel.app" ,
     "http://localhost:3000"
 ]
 
